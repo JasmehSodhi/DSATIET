@@ -11,6 +11,7 @@ int bs(int arr[],int n,int tofind){
         else
         mid=mid-1;
     }
+    
     return -1;
 }
 int main(){
