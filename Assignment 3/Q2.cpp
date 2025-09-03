@@ -18,13 +18,29 @@ void push(char c){
     }
     top++;
     stack[top]=c;
-    cout<<"Element pushed: "<<c<<endl;
+    
 }
 void pop(){
     if(isEmpty()){
         cout<<"Stack Underflow"<<endl;
         return;
     }
-    cout<<"Element popped: "<<stack[top]<<endl;
+    
     top--;
+}
+int main(){
+    string str;
+    string reversed="";
+    cout<<"Enter a string: ";
+    cin>>str;
+    for(int i=0;i<str.length();i++){
+        push(str[i]);
+    }
+    while (top != -1) {
+        reversed += stack[top];
+        pop();
+    }
+
+    cout << "Reversed string: " << reversed << endl;
+    return 0;
 }
