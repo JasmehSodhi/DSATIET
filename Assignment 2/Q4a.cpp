@@ -12,8 +12,8 @@ int main() {
     getline(cin, str2);
     
     string result = str1 + str2;
-    
+
     cout << "Concatenated string: " << result << endl;
-    
+
     return 0;
 }
