@@ -7,7 +7,7 @@ struct Edge {
     int u, v, wt;
 };
 
-int findParent(int node, vector<int> &parent) {
+int findParent(int node, vector<int> &parent) {  // this function finds the representative parent of a node in the disjoint set
     if (parent[node] == node)
         return node;
 
@@ -53,7 +53,7 @@ int main() {
         }
     );
 
-    vector<int> parent(n), rank(n, 0);
+    vector<int> parent(n), rank(n, 0); // parent and rank arrays for DSU
 
     // initialize DSU
     for (int i = 0; i < n; i++)

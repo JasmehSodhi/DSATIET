@@ -1,77 +1,62 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <queue>
 using namespace std;
-
-struct Edge {
-    int u, v, wt;
-};
-
-int findParent(int node, vector<int> &parent) {
-    if (parent[node] == node)
-        return node;
-
-    return parent[node] = findParent(parent[node], parent); 
-}
-
-void unionSet(int a, int b, vector<int> &parent, vector<int> &rank) {
-    a = findParent(a, parent);
-    b = findParent(b, parent);
-
-    if (a == b) return;
-
-    if (rank[a] < rank[b]) {
-        parent[a] = b;
-    }
-    else if (rank[b] < rank[a]) {
-        parent[b] = a;
-    }
-    else {
-        parent[b] = a;
-        rank[a]++;
-    }
-}
 
 int main() {
 
     int n, m;
     cin >> n >> m;
 
-    vector<Edge> edges;
+    vector<pair<int,int>> adj[100];
 
-    // input edges
-    for (int i = 0; i < m; i++) {
+    for(int i = 0; i < m; i++) {
         int u, v, wt;
         cin >> u >> v >> wt;
-        edges.push_back({u, v, wt});
+        adj[u].push_back({v, wt});
+        adj[v].push_back({u, wt});   // remove for directed graph
     }
 
-    // sort edges by weight
-    sort(edges.begin(), edges.end(), 
-        [](Edge &a, Edge &b) {
-            return a.wt < b.wt;
-        }
-    );
+    int src;
+    cin >> src;
 
-    vector<int> parent(n), rank(n, 0);
+    const int INF = 1000000000;
+    vector<int> dist(n+1, INF);
+    vector<int> vis(n+1, 0);
 
-    // initialize DSU
-    for (int i = 0; i < n; i++)
-        parent[i] = i;
+    // min-heap: {dist, node}
+    priority_queue<
+        pair<int,int>,
+        vector<pair<int,int>>,
+        greater<pair<int,int>>
+    > pq;
 
-    int totalCost = 0;
+    dist[src] = 0;
+    pq.push({0, src});
 
-    for (auto &e : edges) {
-        int pu = findParent(e.u, parent);
-        int pv = findParent(e.v, parent);
+    while(!pq.empty()) {
 
-        if (pu != pv) {
-            totalCost += e.wt;
-            unionSet(pu, pv, parent, rank);
+        int node = pq.top().second;
+        pq.pop();
+
+        if(vis[node]) continue;
+        vis[node] = 1;
+
+        for(auto it : adj[node]) {
+            int next = it.first;
+            int wt   = it.second;
+
+            if(dist[node] + wt < dist[next]) {
+                dist[next] = dist[node] + wt;
+                pq.push({dist[next], next});
+            }
         }
     }
 
-    cout << totalCost;
+    for(int i = 1; i <= n; i++) {
+        cout << "Distance from " << src << " to " 
+             << i << " = " << dist[i] << endl;
+    }
 
     return 0;
 }

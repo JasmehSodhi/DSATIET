@@ -10,10 +10,10 @@ void dfs(int node){
     cout << node << " ";   // print node
 
     // visit neighbors using traditional loop
-    for(int i = 0; i < adj[node].size(); i++){
-        int x = adj[node][i];
+    for(int i = 0; i < adj[node].size(); i++){  // iterate over all neighbors of node
+        int x = adj[node][i];                   // get the neighbor at index i
         if(vis[x] == 0){
-            dfs(x);
+            dfs(x);//It would make a recursive call to dfs for the unvisited neighbor x
         }
     }
 }
@@ -26,8 +26,8 @@ int main(){
     for(int i = 0; i < m; i++){
         int u, v;
         cin >> u >> v;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
+        adj[u].push_back(v);//append v to adjacency list of u
+        adj[v].push_back(u);//append u to adjacency list of v
     }
 
     int start;
